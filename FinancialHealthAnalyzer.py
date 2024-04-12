@@ -2,7 +2,7 @@ import unittest
 from io import StringIO
 
 #FinancialTransaction class allows for the program to read FinancialTransaction data found in test setUp and main below.
-#This class does not need to be edited
+#This class does not need to be edited -----------------------------------------------------------
 class FinancialTransaction:
     def __init__(self, date, type, amount):
         self.date = date
@@ -14,6 +14,8 @@ class FinancialTransaction:
         parts = line.strip().split(',')
         date, type, amount = parts[0], parts[1], float(parts[2])
         return FinancialTransaction(date, type, amount)
+#-------------------------------------------------------------------------------------------------
+
 
 class FinancialHealthAnalyzer:
     def __init__(self, transactions):
@@ -27,14 +29,19 @@ class FinancialHealthAnalyzer:
     def total_expenses(self):
         return sum(transaction.amount for transaction in self.transactions if transaction.type == "Expense")
 
+    #Subtracts the Expenses from Revenue to find Profit
     def profit(self):
-    #write code for this method
+        return self.total_revenue() - self.total_expenses() #NEED TO CHECK IF THIS WORKS
 
+    #Divides Profit by Revenue to abtain Profit Margin
     def profit_margin(self):
-    #write code for this method
+        return self.profit() / self.total_revenue()
     
+    #Finds the Average Transaction Amount by dividing (TotalRevenue-TotalExpenses) by Amount of transactions
+    #i.e., Profit / Number of Transactions
     def average_transaction_amount(self):
-    #write code for this method
+        #return self.profit() / len(self.transactions)
+        return len(self.transactions) #just testing if len works. Expecting output to be 4
 
     #Determines finalncial health and returns the corresponding string
     def financial_health(self):
