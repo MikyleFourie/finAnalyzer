@@ -1,3 +1,5 @@
+# Mikyle Fourie - 2492832
+
 # Description for Lab Test
 
 This code takes transaction data as a List of transactions and analyses income against expenses to categorize the financial health for the company. 
