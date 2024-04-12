@@ -77,8 +77,8 @@ class TestFinancialHealthAnalyzer(unittest.TestCase):
         analyzer = FinancialHealthAnalyzer(self.transactions)
         self.assertEqual(analyzer.total_revenue(), 2500)
 
-    #def test_total_expenses(self):
-    #This code needs to be completed. Uncomment when Ready
+    def test_total_expenses(self):
+        self.assertEqual(analyzer.total_expenses(), 800)
 
     #def test_profit(self):
     #This code needs to be completed. Uncomment when Ready
@@ -101,5 +101,5 @@ if __name__ == '__main__':
     print("Profit margin: ", analyzer.profit_margin())
     print("Average transaction amount: ", analyzer.average_transaction_amount())
     print("Financial health: ", analyzer.financial_health())
-    unittest.main()
+    unittest.main(verbosity=2)
     
