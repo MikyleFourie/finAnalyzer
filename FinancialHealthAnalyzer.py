@@ -40,8 +40,7 @@ class FinancialHealthAnalyzer:
     #Finds the Average Transaction Amount by dividing (TotalRevenue-TotalExpenses) by Amount of transactions
     #i.e., Profit / Number of Transactions
     def average_transaction_amount(self):
-        #return self.profit() / len(self.transactions)
-        return len(self.transactions) #just testing if len works. Expecting output to be 4
+        return self.profit() / len(self.transactions)
 
     #Determines finalncial health and returns the corresponding string
     def financial_health(self):
@@ -84,6 +83,18 @@ class TestFinancialHealthAnalyzer(unittest.TestCase):
     def test_profit(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
         self.assertEqual(testAnalyzer.profit(), 1700)
+
+    def test_profit_margin(self):
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.profit_margin(), 0.68)
+
+    def test_average_transaction_amount(self):
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.average_transaction_amount(), 425)
+
+    def test_financial_health(self):
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.financial_health(), "Healthy")
 
     #Additional testing methods might be required. test_total_revenue can be changed/expanded
 
