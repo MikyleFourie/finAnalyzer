@@ -64,33 +64,42 @@ class TestFinancialHealthAnalyzer(unittest.TestCase):
             FinancialTransaction("2024-01-04", "Income", 1500)
         ]
         self.transactions = transactions_data
+        #Expected results for current Test Data:
+        #Total Revenue:             2500
+        #Total Expenses:            800
+        #Profit:                    1700
+        #Profit Margin:             0.68
+        #Ave Transaction Amount:    425
+        #Financial Health:          Healthy
 
     #Test case example that returns total revenue. Inluded as a tutorial for basis of other test cases.
     def test_total_revenue(self):
         analyzer = FinancialHealthAnalyzer(self.transactions)
         self.assertEqual(analyzer.total_revenue(), 2500)
 
-    def test_total_expenses(self):
-    #This code needs to be completed
-    def test_profit(self):
-    #This code needs to be completed
+    #def test_total_expenses(self):
+    #This code needs to be completed. Uncomment when Ready
+
+    #def test_profit(self):
+    #This code needs to be completed. Uncomment when Ready
 
     #Additional testing methods might be required. test_total_revenue can be changed/expanded
 
 #Main function is where your code starts to run. Methods need to be compiled correctly before they can be called from main    
 if __name__ == '__main__':
     #Do not change the transaction data, this data needs to produce the correct output stated in the lab brief
+    #List of transactions to be processed for the correct outputs as per lab brief
     transactions_data = [
             FinancialTransaction("2024-01-01", "Income", 50),
             FinancialTransaction("2024-01-02", "Expense", 500),
             FinancialTransaction("2024-01-03", "Expense", 300),
             FinancialTransaction("2024-01-04", "Income", 75)
         ]
-    FinancialHealthAnalyzer.transactions = transactions_data
+    FinancialHealthAnalyzer.transactions = transactions_data    #loads the list into class
     analyzer = FinancialHealthAnalyzer(FinancialHealthAnalyzer.transactions)
-    print("Profit: ")
-    print("Profit margin: ")
-    print("Average transaction amount: ")
-    print("Financial health: ")
+    print("Profit: ", analyzer.profit())
+    print("Profit margin: ", analyzer.profit_margin())
+    print("Average transaction amount: ", analyzer.average_transaction_amount())
+    print("Financial health: ", analyzer.financial_health())
     unittest.main()
     
