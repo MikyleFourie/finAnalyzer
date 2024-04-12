@@ -74,14 +74,16 @@ class TestFinancialHealthAnalyzer(unittest.TestCase):
 
     #Test case example that returns total revenue. Inluded as a tutorial for basis of other test cases.
     def test_total_revenue(self):
-        analyzer = FinancialHealthAnalyzer(self.transactions)
-        self.assertEqual(analyzer.total_revenue(), 2500)
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.total_revenue(), 2500)
 
     def test_total_expenses(self):
-        self.assertEqual(analyzer.total_expenses(), 800)
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.total_expenses(), 800)
 
-    #def test_profit(self):
-    #This code needs to be completed. Uncomment when Ready
+    def test_profit(self):
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.profit(), 1700)
 
     #Additional testing methods might be required. test_total_revenue can be changed/expanded
 
