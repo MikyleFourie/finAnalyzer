@@ -24,6 +24,10 @@ class FinancialHealthAnalyzer:
     #Adds together all transactions labeled "Income"
     def total_revenue(self):
         return sum(transaction.amount for transaction in self.transactions if transaction.type == "Income")
+    
+    #Converts income from Dollars to Rand where the exchange rate is $1 = R20
+    def total_revenue_C(self):
+        return self.total_revenue() * 20
 
     #Adds together all transactions labeled "Expense"
     def total_expenses(self):
@@ -31,11 +35,11 @@ class FinancialHealthAnalyzer:
 
     #Subtracts the Expenses from Revenue to find Profit
     def profit(self):
-        return self.total_revenue() - self.total_expenses() #NEED TO CHECK IF THIS WORKS
+        return self.total_revenue_C() - self.total_expenses()
 
-    #Divides Profit by Revenue to abtain Profit Margin
+    #Divides Profit by Revenue to obtain Profit Margin
     def profit_margin(self):
-        return self.profit() / self.total_revenue()
+        return self.profit() / self.total_revenue_C()
     
     #Finds the Average Transaction Amount by dividing (TotalRevenue-TotalExpenses) by Amount of transactions
     #i.e., Profit / Number of Transactions
@@ -56,47 +60,64 @@ class TestFinancialHealthAnalyzer(unittest.TestCase):
     #Setup data allows for code to be tested without manually writing test transaction code for every test function. 
     #setUp transaction data and structure may be changed to include more test functions.
     def setUp(self):
-        transactions_data = [
-            FinancialTransaction("2024-01-01", "Income", 1000),
-            FinancialTransaction("2024-01-02", "Expense", 500),
-            FinancialTransaction("2024-01-03", "Expense", 300),
-            FinancialTransaction("2024-01-04", "Income", 1500)
-        ]
-        self.transactions = transactions_data
-        #Expected results for current Test Data:
-        #Total Revenue:             2500
-        #Total Expenses:            800
-        #Profit:                    1700
-        #Profit Margin:             0.68
-        #Ave Transaction Amount:    425
-        #Financial Health:          Healthy
+        #Test data for a Healthy case                               #Expected results for current Test Data:
+        transactions_data = [                                       #Total Revenue:             2500
+            FinancialTransaction("2024-01-01", "Income", 1000),     #Total Converted Revenue:   50000
+            FinancialTransaction("2024-01-02", "Expense", 500),     #Total Expenses:            800
+            FinancialTransaction("2024-01-03", "Expense", 300),     #Profit:                    49200
+            FinancialTransaction("2024-01-04", "Income", 1500)      #Profit Margin:             0.984
+        ]                                                           #Ave Transaction Amount:    12300
+        self.transactions = transactions_data                       #Financial Health:          Healthy
+        
 
     #Test case example that returns total revenue. Inluded as a tutorial for basis of other test cases.
     def test_total_revenue(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
         self.assertEqual(testAnalyzer.total_revenue(), 2500)
 
+    #Test case that returns the value of the total revenue after being converted from dollars to rand
+    def test_total_revenue_C(self):
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.total_revenue_C(), 50000)
+
+    #Test case that returns total expenses
     def test_total_expenses(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
         self.assertEqual(testAnalyzer.total_expenses(), 800)
 
-    def test_profit(self):
+    #Test case that returns total profit compared to a static value
+    def test_profit1(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
-        self.assertEqual(testAnalyzer.profit(), 1700)
+        self.assertEqual(testAnalyzer.profit(), 49200)
 
+    #Test case that returns total profit compared to a calculation of outputs from previous functions
+    def test_profit2(self):
+        testAnalyzer = FinancialHealthAnalyzer(self.transactions)
+        self.assertEqual(testAnalyzer.profit(), testAnalyzer.total_revenue_C() - testAnalyzer.total_expenses())
+
+    #Test case that returns profit margin
     def test_profit_margin(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
-        self.assertEqual(testAnalyzer.profit_margin(), 0.68)
+        self.assertEqual(testAnalyzer.profit_margin(), 0.984)
 
+    #Test case that returns average transaction amount
     def test_average_transaction_amount(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
-        self.assertEqual(testAnalyzer.average_transaction_amount(), 425)
+        self.assertEqual(testAnalyzer.average_transaction_amount(), 12300)
 
+    #Test case that checks financial health
     def test_financial_health(self):
         testAnalyzer = FinancialHealthAnalyzer(self.transactions)
-        self.assertEqual(testAnalyzer.financial_health(), "Healthy")
+        profLoss = testAnalyzer.total_revenue_C() - testAnalyzer.total_expenses()
 
-    #Additional testing methods might be required. test_total_revenue can be changed/expanded
+        if testAnalyzer.financial_health() == "Healthy":
+            self.assertGreater(profLoss, -1)
+        elif testAnalyzer.financial_health() == "Warning":
+            self.assertTrue( -1000 <= profLoss < 0)
+        elif testAnalyzer.financial_health() == "Critical":
+            self.assertLess(profLoss, -1000)
+
+
 
 #Main function is where your code starts to run. Methods need to be compiled correctly before they can be called from main    
 if __name__ == '__main__':
